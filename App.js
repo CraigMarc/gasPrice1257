@@ -38,6 +38,9 @@ async function requestLocationPermission() {
 const App = () => {
 
  const [location, setLocation] = useState(false);
+ const [error, setError] = useState(null);
+ const [loading, setLoading] = useState(true);
+ const gasData = useRef()
  const latitude = useRef()
  const longitude = useRef()
 
@@ -75,6 +78,82 @@ longitude.current = location.coords.longitude
 console.log(latitude.current)
 console.log(longitude.current)
 
+// make api call for gas prices
+
+       //const res = await fetch("https://blogapi1200.fly.dev/api/comments")
+const fetchCommentInfo = async () => {
+const url = 'https://gas-price.p.rapidapi.com/usaCitiesList';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'e00a73a016msh777ec730a1ccdf4p18d6b4jsn48565e487f12',
+		'X-RapidAPI-Host': 'gas-price.p.rapidapi.com'
+	}
+};
+
+try {
+	const response = await fetch(url, options);
+	const result = await response.text();
+	console.log(result);
+} catch (error) {
+	console.error(error);
+}
+
+
+
+
+}
+
+
+/*
+const fetchCommentInfo = async () => {
+     //setLoading(true)
+ try {
+     const res = await fetch('https://gas-price.p.rapidapi.com/usaCitiesList', {
+method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'e00a73a016msh777ec730a1ccdf4p18d6b4jsn48565e487f12',
+		'X-RapidAPI-Host': 'gas-price.p.rapidapi.com'
+	}
+           })
+
+
+
+       const apiData = await res.json();
+      console.log(apiData)
+       //setData
+       gasData.current = apiData
+
+     }
+
+     catch (error) {
+       console.error("There has been a problem with your fetch operation:", error);
+       //add error message to dom
+       setError(true)
+
+     }
+     setLoading(false)
+
+   }
+
+
+   useEffect(() => {
+     fetchCommentInfo();
+   }, [])
+
+   //display error and loading for api call
+
+   if (error) return (
+     <View>
+
+       <Text>A network error was encountered</Text>
+     </View>
+   )
+
+   //if (loading) return <p>Loading...</p>;
+*/
+
+
   return (
     <View style={styles.container}>
       <Text>Your current location is:</Text>
@@ -83,6 +162,10 @@ console.log(longitude.current)
     </View>
   );
 };
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {
